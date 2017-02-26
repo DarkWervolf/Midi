@@ -1,0 +1,13 @@
+sudo: false
+language: cpp
+compiler: clang
+addons:
+  apt:
+    packages:
+    - libqt4-dev
+    - libasound2-dev
+install:
+ - cd examples/qtplaysmf/
+script:
+ - qmake -spec unsupported/linux-clang .
+ - make
