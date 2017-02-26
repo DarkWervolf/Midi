@@ -11,13 +11,14 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Midi
 TEMPLATE = app
 
-include(QMidi.pri)
-
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    midiplayer.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    midiplayer.h
 
 FORMS    += mainwindow.ui
 
+include(qmidi/QMidi.pri)
 
