@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Play</string>
+     <string>Play Midi</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="filenameEdit">
@@ -50,7 +50,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Open...</string>
+     <string>Open Midi</string>
     </property>
    </widget>
    <widget class="QSlider" name="fileSlider">
@@ -66,6 +66,45 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
+   <widget class="QPushButton" name="openButton1">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>70</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Open Audio</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="playButton1">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>70</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Play Audio</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="stopButton">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>70</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stop Audio</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -73,7 +112,7 @@
      <x>0</x>
      <y>0</y>
      <width>652</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

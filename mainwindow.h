@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 #include "midiplayer.h"
+#include "mp3.h"
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
+#include <QMediaPlayerControl>
 
 namespace Ui {
 class MainWindow;
@@ -17,7 +21,10 @@ public:
     ~MainWindow();
 
 public slots:
+    void playAudio();
+    void stopAudio();
     void openFileDialog();
+    void openFileDialog1();
     void playFile();
     void moveSlider(int value);
 
@@ -26,6 +33,9 @@ private:
     QMidiFile* midiFile;
     QMidiOut* midiOut;
     MidiPlayer* player;
+    QMediaPlayer* player1;
+    QMediaPlaylist* playlist;
+    QString filename1;
     QString filename;
 };
 
