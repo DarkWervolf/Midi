@@ -62,6 +62,9 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="maximum">
+     <number>99</number>
+    </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
     </property>
@@ -95,14 +98,40 @@
    <widget class="QPushButton" name="stopButton">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>70</y>
+      <x>430</x>
+      <y>110</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
      <string>Stop Audio</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pauseButton">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>150</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pause Audio</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="stopMidiButton">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>10</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stop Midi</string>
     </property>
    </widget>
   </widget>

@@ -21,12 +21,15 @@ public:
     ~MainWindow();
 
 public slots:
-    void playAudio();
+    void playAudio(qint64 position);
+    void stopMidi();
     void stopAudio();
+    void pauseAudio();
     void openFileDialog();
     void openFileDialog1();
     void playFile();
     void moveSlider(int value);
+    void moveSlider1(qint64 value);
 
 private:
     Ui::MainWindow *ui;
@@ -37,6 +40,10 @@ private:
     QMediaPlaylist* playlist;
     QString filename1;
     QString filename;
+    int check;
+    int pauseCheck;
+    qint64 sizeSong;
+    qint64 pos;
 };
 
 #endif // MAINWINDOW_H

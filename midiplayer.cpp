@@ -33,3 +33,10 @@ void MidiPlayer::run()
     midi_out->disconnect();
 }
 
+void MidiPlayer::stop()
+{
+    midi_file->clear();
+    midi_file->events().clear();
+    midi_out->disconnect();
+}
+

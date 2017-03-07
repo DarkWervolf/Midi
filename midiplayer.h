@@ -11,6 +11,7 @@ class MidiPlayer : public QThread
     Q_OBJECT
 public:
     MidiPlayer(QMidiFile* file, QMidiOut* out);
+    void stop();
 private:
     QMidiFile* midi_file;
     QMidiOut* midi_out;
