@@ -7,121 +7,96 @@
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent), check(0), pauseCheck(0), pos(0),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent), ui(new Ui::MainWindow), midiPlayer(0), check(0), paused(false), pos(0)
 {
     ui->setupUi(this);
-    connect(ui->openButton, SIGNAL(clicked(bool)), this, SLOT(openFileDialog()));
-    connect(ui->playButton, SIGNAL(clicked(bool)), this, SLOT(playFile()));
-    connect(ui->openButton1, SIGNAL(clicked(bool)), this, SLOT(openFileDialog1()));
-    connect(ui->playButton1, SIGNAL(clicked(bool)), this, SLOT(playAudio(pos)));
+    connect(ui->openMidiButton, SIGNAL(clicked(bool)), this, SLOT(openMidiFileDialog()));
+    connect(ui->playMidiButton, SIGNAL(clicked(bool)), this, SLOT(playMidi()));
+    connect(ui->openAudioButton, SIGNAL(clicked(bool)), this, SLOT(openAudioFileDialog()));
+    connect(ui->playAudioButton, SIGNAL(clicked(bool)), this, SLOT(playAudio()));
     connect(ui->stopButton, SIGNAL(clicked(bool)), this, SLOT(stopAudio()));
-    connect(ui->pauseButton, SIGNAL(clicked(bool)), this, SLOT(pauseAudio()));
+    connect(ui->pauseAudioButton, SIGNAL(clicked(bool)), this, SLOT(pauseAudio()));
     connect(ui->stopMidiButton, SIGNAL(clicked(bool)), this, SLOT(stopMidi()));
+    audioPlayer = new QMediaPlayer;
+    connect(audioPlayer, SIGNAL(positionChanged(qint64)), this, SLOT(moveAudioSlider(qint64)));
+
+    QMidiOut* midi_out = new QMidiOut();
+    midi_out->connect(QMidiOut::devices().firstKey());
+    midiPlayer = new MidiPlayer(midi_out);
+    connect(midiPlayer, SIGNAL(eventChanged(int)), this, SLOT(moveMidiSlider(int)));
 }
 
 MainWindow::~MainWindow()
 {
+    delete midiPlayer;
+    delete audioPlayer;
     delete ui;
 }
 
-void MainWindow::openFileDialog()
+void MainWindow::openMidiFileDialog()
 {
-    filename = QFileDialog::getOpenFileName(this, "Open Image", "", "MIDI Files (*.midi *.mid)");
-    ui->filenameEdit->setText(filename);
-    if(check == 1){
-        player1->stop();
-        //player->stop();
-    }
+    midiFilename = QFileDialog::getOpenFileName(this, "Open Image", "", "MIDI Files (*.midi *.mid)");
+    ui->filenameEdit->setText(midiFilename);
 }
 
-void MainWindow::playFile()
+void MainWindow::playMidi()
 {
-    if (!filename.isEmpty()) {
+    stopAudio();
+    stopMidi();
+    if (!midiFilename.isEmpty()) {
         midiFile = new QMidiFile;
-        midiFile->load(filename);
+        midiFile->load(midiFilename);
         ui->fileSlider->setMaximum(midiFile->events().size());
         ui->fileSlider->setValue(0);
-
-        QMidiOut* midi_out = new QMidiOut();
-        midi_out->connect(QMidiOut::devices().firstKey());
-
-        player = new MidiPlayer(midiFile, midi_out);
-        connect(player, SIGNAL(eventChanged(int)), this, SLOT(moveSlider(int)));
-        player->start();
+        midiPlayer->setMidiFile(midiFile);
+        midiPlayer->start();
    }
 }
 
 void MainWindow::stopMidi()
 {
-    if(!player->isRunning()){
-        abort();
-    }
-    else{
-        player->stop();
-        ui->fileSlider->setValue(0);
-    }
+    midiPlayer->stop();
+    ui->fileSlider->setValue(0);
 }
 
-void MainWindow::openFileDialog1()
+void MainWindow::openAudioFileDialog()
 {
-    filename1 = QFileDialog::getOpenFileName(this, "Open Image", "", "Audio Files (*.mp3 *.waw)");
-    ui->filenameEdit->setText(filename1);
-    player1 = new QMediaPlayer();
-    playlist = new QMediaPlaylist();
-    if(check == 1){
-        player1->stop();
-        //player->stop();
-    }
+    audioFilename = QFileDialog::getOpenFileName(this, "Open Image", "", "Audio Files (*.mp3 *.wav)");
+    ui->filenameEdit->setText(audioFilename);
 }
 
-void MainWindow::playAudio(qint64 position)
+void MainWindow::playAudio()
 {
-    if(check == 1){
-        player1->stop();
-        player->stop();
-        check = 0;
-    }
-    if(!filename1.isEmpty()){
-        playlist->addMedia(QUrl(filename1));
-        playlist->setCurrentIndex(1);
-        player1->setPlaylist(playlist);
-        connect(player1, SIGNAL(positionChanged(qint64)), this, SLOT(moveSlider1(qint64)));
-        check = 1;
-        player1->setPosition(position);
-        qDebug() << player1->position();
-        player1->play();
+    stopAudio();
+    stopMidi();
+    if(!audioFilename.isEmpty()){
+        audioPlayer->setMedia(QUrl::fromLocalFile(audioFilename));
+        audioPlayer->play();
     }
 }
 
 void MainWindow::stopAudio()
 {
-    if(player1){
-        player1->stop();
-    }
+    audioPlayer->stop();
 }
 
 void MainWindow::pauseAudio()
 {
-    if(pauseCheck == 1){
-         playAudio(sizeSong);
+    if (audioPlayer->state() == QMediaPlayer::PlayingState){
+        audioPlayer->pause();
     }
-    if(pauseCheck == 0){
-        pauseCheck = 1;
-        sizeSong = player1->position();
-        qDebug() << player1->position();
-        player1->pause();
-        check = 0;
+    else if (audioPlayer->state() == QMediaPlayer::PausedState){
+        audioPlayer->play();
     }
 }
 
-void MainWindow::moveSlider(int value)
+void MainWindow::moveMidiSlider(int value)
 {
     ui->fileSlider->setValue(value);
 }
 
-void MainWindow::moveSlider1(qint64 value)
+void MainWindow::moveAudioSlider(qint64 value)
 {
-    ui->fileSlider->setMaximum(player1->duration());
+    ui->fileSlider->setMaximum(audioPlayer->duration());
     ui->fileSlider->setValue(value);
 }

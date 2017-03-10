@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include "midiplayer.h"
-#include "mp3.h"
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 #include <QMediaPlayerControl>
@@ -21,27 +20,27 @@ public:
     ~MainWindow();
 
 public slots:
-    void playAudio(qint64 position);
+    void playAudio();
     void stopMidi();
     void stopAudio();
     void pauseAudio();
-    void openFileDialog();
-    void openFileDialog1();
-    void playFile();
-    void moveSlider(int value);
-    void moveSlider1(qint64 value);
+    void openMidiFileDialog();
+    void openAudioFileDialog();
+    void playMidi();
+    void moveMidiSlider(int value);
+    void moveAudioSlider(qint64 value);
 
 private:
     Ui::MainWindow *ui;
     QMidiFile* midiFile;
     QMidiOut* midiOut;
-    MidiPlayer* player;
-    QMediaPlayer* player1;
+    MidiPlayer* midiPlayer;
+    QMediaPlayer* audioPlayer;
     QMediaPlaylist* playlist;
-    QString filename1;
-    QString filename;
+    QString audioFilename;
+    QString midiFilename;
     int check;
-    int pauseCheck;
+    bool paused;
     qint64 sizeSong;
     qint64 pos;
 };

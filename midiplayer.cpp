@@ -1,18 +1,28 @@
 #include "midiplayer.h"
 
-MidiPlayer::MidiPlayer(QMidiFile* file, QMidiOut* out)
+MidiPlayer::MidiPlayer(QMidiOut* out) : midi_file(0), midi_out(out), state(STOPPED)
 {
-    midi_file = file;
-    midi_out = out;
+}
+
+MidiPlayer::~MidiPlayer()
+{
+    stop();
 }
 
 void MidiPlayer::run()
 {
+    if (!midi_file) {
+        return;
+    }
     QElapsedTimer t;
     t.start();
     QList<QMidiEvent*> events = midi_file->events();
     int eventNumber = 0;
+    state = PLAYING;
     for (QMidiEvent* e : events) {
+        if (state != PLAYING) {
+            break;
+        }
         if (e->type() != QMidiEvent::Meta) {
             qint64 event_time = midi_file->timeFromTick(e->tick()) * 1000;
 
@@ -29,14 +39,18 @@ void MidiPlayer::run()
             }
         }
     }
-
+    
     midi_out->disconnect();
+    delete midi_file;
 }
 
 void MidiPlayer::stop()
 {
-    midi_file->clear();
-    midi_file->events().clear();
-    midi_out->disconnect();
+    state = STOPPED;
+}
+
+void MidiPlayer::setMidiFile(QMidiFile* file)
+{
+    midi_file = file;
 }
 

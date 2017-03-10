@@ -10,11 +10,15 @@ class MidiPlayer : public QThread
 {
     Q_OBJECT
 public:
-    MidiPlayer(QMidiFile* file, QMidiOut* out);
+    MidiPlayer(QMidiOut* out);
+    ~MidiPlayer();
     void stop();
+    void setMidiFile(QMidiFile* file);
 private:
+    enum states {STOPPED, PLAYING};
     QMidiFile* midi_file;
     QMidiOut* midi_out;
+    int state;
 protected:
     void run();
 signals:

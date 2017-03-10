@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="playButton">
+   <widget class="QPushButton" name="playMidiButton">
     <property name="geometry">
      <rect>
       <x>430</x>
@@ -40,7 +40,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="openButton">
+   <widget class="QPushButton" name="openMidiButton">
     <property name="geometry">
      <rect>
       <x>330</x>
@@ -69,7 +69,7 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="openButton1">
+   <widget class="QPushButton" name="openAudioButton">
     <property name="geometry">
      <rect>
       <x>330</x>
@@ -82,7 +82,7 @@
      <string>Open Audio</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="playButton1">
+   <widget class="QPushButton" name="playAudioButton">
     <property name="geometry">
      <rect>
       <x>430</x>
@@ -108,7 +108,7 @@
      <string>Stop Audio</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pauseButton">
+   <widget class="QPushButton" name="pauseAudioButton">
     <property name="geometry">
      <rect>
       <x>430</x>
@@ -141,7 +141,7 @@
      <x>0</x>
      <y>0</y>
      <width>652</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
